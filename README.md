@@ -1,7 +1,7 @@
 # 🚀 Sameer Ahmed — Portfolio
 
 > Personal portfolio website built from scratch with HTML, CSS & JavaScript.  
-> **Live:** [portfolio-site-psi-gold-31.vercel.app](portfolio-chi-two-1deo18r4x1.vercel.app)
+> **Live:** [portfolio-chi-two-1deo18r4x1.vercel.app](portfolio-chi-two-1deo18r4x1.vercel.app)
 
 ---
 
