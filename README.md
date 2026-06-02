@@ -1,7 +1,7 @@
 # 🚀 Sameer Ahmed — Portfolio
 
 > Personal portfolio website built from scratch with HTML, CSS & JavaScript.  
-> **Live:** [portfolio-chi-two-1deo18r4x1.vercel.app](portfolio-chi-two-1deo18r4x1.vercel.app)
+> **Live:** [portfolio-chi-two-1deo18r4x1.vercel.app](https://portfolio-chi-two-1deo18r4x1.vercel.app)
 
 ---
 
@@ -26,7 +26,6 @@ Third-year Computer Science student at **Muffakham Jah College of Engineering, H
 - 👋 **Hire Me Banner** — slides up after 8 seconds
 - 🎮 **Konami Code Easter Egg** — try ↑ ↑ ↓ ↓ ← → ← → B A
 - 📋 **Copy Email** — one-click clipboard copy
-- 📄 **Resume Download** — embedded PDF download
 - 📱 **Fully Responsive** — mobile optimized
 
 ---
