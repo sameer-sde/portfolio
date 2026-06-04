@@ -312,7 +312,7 @@ nav.scrolled{
 .sdot:hover{border-color:var(--muted2);}
 
 /* ━━━ FEATURE 5: CUSTOM CURSOR TRAIL ━━━ */
-.trail{position:fixed;pointer-events:none;z-index:9995;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%);transition:opacity .4s;}
+.trail{position:fixed;pointer-events:none!important;z-index:0;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%);transition:opacity .4s;}
 
 /* ━━━ FEATURE 6: STATS TICKER AT TOP ━━━ */
 .stats-ticker{
@@ -383,7 +383,7 @@ nav.scrolled{
   transition:width .2s,height .2s,opacity .2s;
   mix-blend-mode:difference;
 }
-#cur-glow{
+#cur-glow{pointer-events:none!important;
   position:fixed;width:300px;height:300px;border-radius:50%;
   background:radial-gradient(circle,rgba(255,69,0,0.06) 0%,transparent 70%);
   pointer-events:none;z-index:1;
@@ -984,7 +984,7 @@ footer{
 
 /* ── MOBILE ── */
 @media(max-width:900px){
-  body{cursor:auto;}#cur,#cur-glow{display:none;}
+  body{cursor:auto;}#cur,#cur-glow{pointer-events:none!important;display:none;}
   nav{padding:16px 20px;}nav.scrolled{padding:12px 20px;}
   .nav-links{display:none;}
   #hero{grid-template-columns:1fr;padding:100px 20px 60px;gap:40px;}
