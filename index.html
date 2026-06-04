@@ -77,6 +77,191 @@ body{
 .edu-perfect-wrap{display:flex;align-items:center;gap:16px;margin-top:16px;padding:16px;background:rgba(34,197,94,0.05);border:1px solid rgba(34,197,94,0.12);}
 @media(max-width:900px){.edu-card-row{grid-template-columns:1fr;}}
 
+
+/* ━━━ UI ENHANCEMENTS ━━━ */
+
+/* 1. CUSTOM SCROLLBAR */
+::-webkit-scrollbar{width:4px;}
+::-webkit-scrollbar-track{background:var(--bg);}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px;}
+::-webkit-scrollbar-thumb:hover{background:var(--accent2);}
+
+/* 2. TEXT SELECTION */
+::selection{background:rgba(255,69,0,0.25);color:var(--text);}
+
+/* 3. NAV GLASS EFFECT */
+nav.scrolled{
+  background:rgba(6,6,8,0.75)!important;
+  backdrop-filter:blur(24px) saturate(200%)!important;
+  border-bottom:1px solid rgba(255,69,0,0.1)!important;
+}
+
+/* 4. HERO PHOTO ENHANCEMENT */
+.hero-photo-frame{
+  position:relative;
+}
+.hero-photo-frame::after{
+  content:'';
+  position:absolute;
+  inset:-2px;
+  background:linear-gradient(135deg,var(--accent),var(--blue),var(--purple),var(--accent));
+  background-size:300% 300%;
+  z-index:-1;
+  animation:borderRotate 4s linear infinite;
+  filter:blur(8px);
+  opacity:0.5;
+}
+@keyframes borderRotate{
+  0%{background-position:0% 50%;}
+  50%{background-position:100% 50%;}
+  100%{background-position:0% 50%;}
+}
+
+/* 5. HERO STATS CARDS */
+.hero-stats{
+  background:rgba(255,255,255,0.02);
+  border:1px solid var(--border);
+  padding:20px 28px;
+  display:flex;
+  gap:40px;
+}
+.hero-stat-val{
+  background:linear-gradient(135deg,var(--text),var(--accent));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+/* 6. SECTION TITLE GRADIENT FIRST WORD */
+.sec-title{
+  position:relative;
+}
+
+/* 7. PROJECT CARD COLORED LEFT BORDER */
+.proj-card.proj-card-full{border-left:3px solid var(--accent);}
+.proj-card:not(.proj-card-full):first-of-type ~ .proj-card:not(.proj-card-full){border-left:3px solid var(--blue);}
+
+/* 8. BETTER PROJ CARD HOVER */
+.proj-card:hover{
+  box-shadow:0 0 0 1px rgba(255,69,0,0.15),0 8px 32px rgba(0,0,0,0.3);
+}
+
+/* 9. AP CARD ENHANCEMENT */
+.ap-card:hover{
+  box-shadow:0 0 0 1px rgba(255,69,0,0.15),0 8px 32px rgba(0,0,0,0.3);
+}
+
+/* 10. CONTACT TITLE ENHANCEMENT */
+.contact-title{
+  background:linear-gradient(135deg,var(--text) 0%,var(--text) 40%,var(--accent) 60%,var(--accent2) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
+/* 11. SKILL CATEGORY HOVER */
+.skill-category:hover{
+  border-color:rgba(255,69,0,0.2);
+  box-shadow:0 0 24px rgba(255,69,0,0.04);
+}
+
+/* 12. EDU CARD GLOW */
+.edu-card-main:hover{
+  box-shadow:0 0 32px rgba(255,69,0,0.06);
+}
+
+/* 13. SECTION LABEL ENHANCEMENT */
+.sec-label{
+  letter-spacing:4px;
+}
+
+/* 14. TICKER GRADIENT FADE EDGES */
+.ticker{
+  position:relative;
+}
+.ticker::before,.ticker::after{
+  content:'';
+  position:absolute;
+  top:0;bottom:0;width:80px;z-index:2;pointer-events:none;
+}
+.ticker::before{left:0;background:linear-gradient(to right,var(--bg),transparent);}
+.ticker::after{right:0;background:linear-gradient(to left,var(--bg),transparent);}
+
+/* 15. STATS TICKER ENHANCEMENT */
+.stats-ticker-item{
+  letter-spacing:2px;
+  font-weight:600;
+}
+
+/* 16. FOOTER SOCIAL LINKS */
+.footer-socials{display:flex;gap:16px;align-items:center;}
+.footer-social{
+  font-family:var(--mono);font-size:10px;color:var(--muted2);
+  text-decoration:none;letter-spacing:1px;
+  transition:color .2s;
+}
+.footer-social:hover{color:var(--accent);}
+
+/* 17. HIRE BANNER ENHANCEMENT */
+#hire-banner{
+  border-radius:0!important;
+  box-shadow:0 -4px 32px rgba(255,69,0,0.3)!important;
+}
+
+/* 18. BACK TO TOP ENHANCEMENT */
+#btt{
+  border-radius:0!important;
+  box-shadow:0 4px 16px rgba(0,0,0,0.3)!important;
+}
+
+/* 19. CMD PALETTE ENHANCEMENT */
+#cmd-box{
+  box-shadow:0 24px 64px rgba(0,0,0,0.6),0 0 0 1px rgba(255,69,0,0.1)!important;
+}
+
+/* 20. LINK HOVER UNDERLINE ANIMATION */
+.about-body a{
+  background-image:linear-gradient(var(--accent),var(--accent));
+  background-size:0% 1px;
+  background-repeat:no-repeat;
+  background-position:0 100%;
+  transition:background-size .3s;
+  border-bottom:none!important;
+}
+.about-body a:hover{background-size:100% 1px;}
+
+/* 21. SECTION DIVIDER GRADIENT */
+.sec-divider{
+  background:linear-gradient(90deg,transparent,rgba(255,69,0,0.2),transparent)!important;
+}
+
+/* 22. OSS BADGE ENHANCEMENT */
+.badge-stars{
+  background:rgba(200,160,0,0.1)!important;
+  border:1px solid rgba(200,160,0,0.3)!important;
+}
+.badge-pr{
+  background:rgba(64,128,192,0.1)!important;
+  border:1px solid rgba(64,128,192,0.3)!important;
+}
+
+/* 23. HERO EYEBROW PULSE */
+.hero-eyebrow{
+  animation:eyebrowPulse 3s ease-in-out infinite;
+}
+@keyframes eyebrowPulse{
+  0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,0);}
+  50%{box-shadow:0 0 0 4px rgba(34,197,94,0.1);}
+}
+
+/* 24. METRIC PILL ENHANCEMENT */
+.proj-metric-item:hover .proj-metric-val{
+  transform:scale(1.05);
+  transition:transform .2s;
+}
+
+/* 25. GLOBE HINT ENHANCEMENT */
+.globe-hint{
+  background:linear-gradient(90deg,var(--accent),var(--blue));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+
 /* ━━━ FEATURE 1: COMMAND PALETTE ━━━ */
 #cmd-overlay{position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);display:none;align-items:flex-start;justify-content:center;padding-top:15vh;}
 #cmd-overlay.open{display:flex;}
@@ -814,6 +999,339 @@ footer{
   .edu-item,.exp-item{grid-template-columns:1fr;gap:4px;}
   footer{padding:20px;flex-direction:column;gap:8px;}
 }
+
+/* ━━━ PREMIUM UI OVERHAUL ━━━ */
+
+/* FONTS & BASE */
+body{letter-spacing:-.01em;}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--accent);border-radius:2px;}
+::selection{background:rgba(255,69,0,0.2);color:var(--text);}
+
+/* NAV PREMIUM */
+nav{transition:all .4s cubic-bezier(.4,0,.2,1);}
+nav.scrolled{
+  background:rgba(6,6,8,0.8)!important;
+  backdrop-filter:blur(32px) saturate(180%)!important;
+  border-bottom:1px solid rgba(255,255,255,0.06)!important;
+  box-shadow:0 1px 0 rgba(255,69,0,0.1)!important;
+}
+.nav-logo{
+  background:linear-gradient(135deg,var(--text),var(--muted));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  font-size:18px!important;
+}
+.nav-logo em{-webkit-text-fill-color:var(--accent);}
+
+/* HERO ENHANCEMENTS */
+.hero-eyebrow{
+  position:relative;
+  overflow:hidden;
+}
+.hero-eyebrow::before{
+  content:'';position:absolute;top:0;left:-100%;
+  width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(34,197,94,0.1),transparent);
+  animation:eyebrowShine 3s ease-in-out infinite;
+}
+@keyframes eyebrowShine{to{left:200%;}}
+
+.hero-name{
+  background:linear-gradient(135deg,#fff 0%,rgba(255,255,255,0.7) 50%,#fff 100%)!important;
+  background-size:200% auto!important;
+  animation:nameShimmer 4s linear infinite!important;
+}
+@keyframes nameShimmer{to{background-position:200% center;}}
+
+/* HERO STATS - CARD STYLE */
+.hero-stats{
+  display:flex;gap:0;
+  border:1px solid var(--border2);
+  background:rgba(255,255,255,0.02);
+  overflow:hidden;
+  margin-top:36px;
+  padding:0!important;
+}
+.hero-stats > div{
+  flex:1;padding:20px 24px;
+  border-right:1px solid var(--border);
+  transition:background .2s;
+}
+.hero-stats > div:last-child{border-right:none;}
+.hero-stats > div:hover{background:rgba(255,69,0,0.04);}
+.hero-stat-val{
+  font-size:28px!important;
+  background:linear-gradient(135deg,var(--text),var(--accent))!important;
+  -webkit-background-clip:text!important;-webkit-text-fill-color:transparent!important;background-clip:text!important;
+}
+
+/* PHOTO FRAME PREMIUM */
+.hero-photo-frame{
+  position:relative;
+}
+.hero-photo-frame::before{
+  content:'';position:absolute;
+  inset:-1px;z-index:-1;
+  background:linear-gradient(135deg,var(--accent),transparent,var(--blue));
+  opacity:.6;
+}
+.hero-photo img{
+  transition:filter .5s,transform .5s!important;
+}
+.hero-photo-frame:hover img{
+  filter:grayscale(0%) contrast(1.05)!important;
+  mix-blend-mode:normal!important;
+  transform:scale(1.02);
+}
+
+/* SECTION DIVIDER */
+.sec-divider{
+  height:1px!important;
+  background:linear-gradient(90deg,transparent,rgba(255,69,0,0.15),rgba(79,142,247,0.1),transparent)!important;
+}
+
+/* SECTION LABEL */
+.sec-label{
+  font-size:11px!important;
+  letter-spacing:4px!important;
+  color:var(--accent)!important;
+}
+
+/* TICKER ENHANCEMENTS */
+.stats-ticker{
+  background:linear-gradient(90deg,var(--accent),#FF6B35,var(--blue),var(--purple),var(--accent))!important;
+  background-size:300% auto!important;
+  animation:gradientMove 5s linear infinite!important;
+  padding:9px 0!important;
+}
+.ticker::before,.ticker::after{
+  content:'';position:absolute;top:0;bottom:0;width:100px;z-index:2;pointer-events:none;
+}
+.ticker::before{left:0;background:linear-gradient(to right,var(--bg),transparent);}
+.ticker::after{right:0;background:linear-gradient(to left,var(--bg),transparent);}
+.ticker{position:relative;}
+
+/* PROJECT CARDS PREMIUM */
+.proj-card{
+  transition:all .3s cubic-bezier(.4,0,.2,1)!important;
+  position:relative;
+}
+.proj-card::after{
+  content:'';position:absolute;
+  inset:0;opacity:0;
+  background:radial-gradient(600px circle at var(--mx,50%) var(--my,50%),rgba(255,69,0,0.04),transparent 40%);
+  transition:opacity .3s;pointer-events:none;
+}
+.proj-card:hover::after{opacity:1;}
+.proj-card:hover{
+  background:rgba(255,255,255,0.025)!important;
+  transform:translateY(-2px)!important;
+  box-shadow:0 12px 40px rgba(0,0,0,0.4),0 0 0 1px rgba(255,69,0,0.1)!important;
+}
+.proj-card.proj-card-full{
+  border-top:1px solid var(--border)!important;
+  border-left:3px solid var(--accent)!important;
+}
+.proj-badge{
+  font-weight:600!important;
+  letter-spacing:1px!important;
+}
+
+/* AP CARDS PREMIUM */
+.ap-card{
+  transition:all .3s cubic-bezier(.4,0,.2,1)!important;
+}
+.ap-card:hover{
+  transform:translateY(-3px)!important;
+  box-shadow:0 16px 48px rgba(0,0,0,0.4),0 0 0 1px rgba(255,69,0,0.12)!important;
+  background:rgba(255,255,255,0.02)!important;
+}
+
+/* METRIC ROW PREMIUM */
+.proj-metric-row{
+  background:rgba(255,255,255,0.01)!important;
+}
+.proj-metric-item:hover{background:rgba(255,69,0,0.04);}
+.proj-metric-val{transition:transform .2s;}
+.proj-metric-item:hover .proj-metric-val{transform:scale(1.08);}
+
+/* SKILLS PREMIUM */
+.skill-category{
+  transition:all .3s!important;
+  position:relative;overflow:hidden;
+}
+.skill-category::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  transform:scaleX(0);transform-origin:center;
+  transition:transform .4s;
+}
+.skill-category:hover::before{transform:scaleX(1);}
+.skill-category:hover{
+  border-color:rgba(255,69,0,0.2)!important;
+  box-shadow:0 8px 32px rgba(0,0,0,0.3),0 0 0 1px rgba(255,69,0,0.08)!important;
+}
+.skill-item-fill{
+  position:relative;overflow:hidden;
+}
+.skill-item-fill::after{
+  content:'';position:absolute;top:0;left:-100%;
+  width:100%;height:100%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,0.4),transparent);
+  animation:skillShine 2s ease-in-out infinite;
+}
+@keyframes skillShine{to{left:200%;}}
+
+/* TECH PILLS PREMIUM */
+.tech-pill{
+  transition:all .25s cubic-bezier(.34,1.56,.64,1)!important;
+}
+.tech-pill:hover{
+  transform:translateY(-3px) scale(1.05)!important;
+  box-shadow:0 4px 12px rgba(0,0,0,0.3)!important;
+}
+
+/* EDU CARDS PREMIUM */
+.edu-card{
+  transition:all .3s cubic-bezier(.4,0,.2,1)!important;
+}
+.edu-card:hover{
+  transform:translateY(-3px)!important;
+  box-shadow:0 12px 40px rgba(0,0,0,0.4)!important;
+}
+.edu-card-main{
+  background:linear-gradient(135deg,var(--surface) 0%,rgba(255,69,0,0.03) 50%,rgba(79,142,247,0.02) 100%)!important;
+}
+
+/* EXPERIENCE ITEMS PREMIUM */
+.exp-item{
+  position:relative;
+}
+.exp-item::before{
+  content:'';position:absolute;
+  left:0;top:0;bottom:0;width:2px;
+  background:linear-gradient(to bottom,var(--accent),var(--blue));
+  transform:scaleY(0);transform-origin:top;
+  transition:transform .3s;
+}
+.exp-item:hover::before{transform:scaleY(1);}
+.exp-item:hover{
+  padding-left:20px!important;
+  background:rgba(255,69,0,0.02)!important;
+}
+
+/* CONTACT PREMIUM */
+.contact-title{
+  line-height:.85!important;
+}
+.contact-title span{
+  display:block;
+  background:linear-gradient(135deg,var(--accent),var(--accent2),#ff8c00)!important;
+  -webkit-background-clip:text!important;-webkit-text-fill-color:transparent!important;background-clip:text!important;
+  background-size:200% auto!important;
+  animation:nameShimmer 3s linear infinite!important;
+}
+.contact-email{
+  position:relative;overflow:hidden;
+  padding:16px 0!important;
+}
+.contact-email::after{
+  content:'';position:absolute;
+  bottom:0;left:0;width:0;height:1px;
+  background:var(--accent);
+  transition:width .3s;
+}
+.contact-email:hover::after{width:100%;}
+
+/* CONTACT LINKS PREMIUM */
+.contact-link{
+  transition:all .25s!important;
+  padding:16px 0!important;
+}
+.contact-link:hover{
+  color:var(--accent)!important;
+  padding-left:12px!important;
+}
+
+/* FOOTER PREMIUM */
+footer{
+  background:linear-gradient(to right,rgba(255,69,0,0.02),transparent,rgba(79,142,247,0.02))!important;
+}
+.footer-socials{display:flex;gap:16px;align-items:center;}
+.footer-social{
+  font-family:var(--mono);font-size:10px;color:var(--muted2);
+  text-decoration:none;letter-spacing:1px;transition:color .2s;
+}
+.footer-social:hover{color:var(--accent);}
+
+/* OSS SECTION PREMIUM */
+.oss-item{
+  position:relative;transition:all .3s!important;
+}
+.oss-item::after{
+  content:'';position:absolute;
+  bottom:0;left:0;width:0;height:1px;
+  background:linear-gradient(90deg,var(--accent),var(--blue));
+  transition:width .4s;
+}
+.oss-item:hover::after{width:100%;}
+.oss-item:hover{padding-left:12px!important;}
+
+/* COMMAND PALETTE PREMIUM */
+#cmd-box{
+  box-shadow:0 32px 80px rgba(0,0,0,0.8),0 0 0 1px rgba(255,69,0,0.15)!important;
+  border:1px solid rgba(255,255,255,0.08)!important;
+}
+#cmd-input-wrap{
+  border-bottom:1px solid rgba(255,255,255,0.06)!important;
+}
+.cmd-item:hover,.cmd-item.selected{
+  background:rgba(255,69,0,0.06)!important;
+  border-left:2px solid var(--accent);
+  padding-left:18px;
+}
+
+/* GLOBE HINT PREMIUM */
+.globe-hint{
+  background:linear-gradient(90deg,var(--muted2),var(--accent),var(--blue),var(--muted2));
+  background-size:200% auto;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  animation:nameShimmer 4s linear infinite;
+}
+
+/* ABOUT TAGS PREMIUM */
+.atag{
+  transition:all .25s cubic-bezier(.34,1.56,.64,1)!important;
+}
+.atag:hover{
+  transform:translateY(-2px) scale(1.05)!important;
+  background:rgba(255,69,0,0.08)!important;
+}
+
+/* SECTION DOTS PREMIUM */
+.sdot{
+  transition:all .3s cubic-bezier(.34,1.56,.64,1)!important;
+}
+.sdot.active{
+  box-shadow:0 0 0 2px rgba(255,69,0,0.3)!important;
+}
+
+/* BUTTONS PREMIUM */
+.btn-primary,.btn-secondary{
+  transition:all .25s cubic-bezier(.34,1.56,.64,1)!important;
+}
+.btn-primary:hover{
+  transform:translateY(-3px)!important;
+  box-shadow:0 8px 24px rgba(255,69,0,0.35)!important;
+}
+.btn-secondary:hover{
+  transform:translateY(-3px)!important;
+  box-shadow:0 8px 24px rgba(0,0,0,0.3)!important;
+}
+
 </style>
 </head>
 <body>
@@ -1400,7 +1918,14 @@ footer{
 
 <footer>
   <span>Sameer Ahmed &copy; 2026</span>
-  <span style="opacity:.4">[ &uarr; &uarr; &darr; &darr; &larr; &rarr; &larr; &rarr; B A ]</span>
+  <div class="footer-socials">
+    <a href="https://github.com/sameer-sde" target="_blank" class="footer-social">GitHub</a>
+    <span style="color:var(--border2)">·</span>
+    <a href="https://www.linkedin.com/in/sameer-ahmed-profile/" target="_blank" class="footer-social">LinkedIn</a>
+    <span style="color:var(--border2)">·</span>
+    <a href="https://leetcode.com/u/SameerAhmedDev/" target="_blank" class="footer-social">LeetCode</a>
+    <span style="color:var(--border2);opacity:.3;font-family:var(--mono);font-size:10px;margin-left:8px;">[ ↑ ↑ ↓ ↓ ← → B A ]</span>
+  </div>
   <span>Built with HTML &middot; CSS &middot; JS</span>
 </footer>
 
