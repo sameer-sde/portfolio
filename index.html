@@ -262,6 +262,29 @@ nav.scrolled{
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
 }
 
+
+/* ━━━ BLOG SECTION ━━━ */
+.blog-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);}
+.blog-card{
+  background:var(--surface);padding:28px;
+  transition:all .25s;position:relative;overflow:hidden;
+}
+.blog-card:hover{background:var(--surface2);transform:translateY(-2px);}
+.blog-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),var(--blue));
+  transform:scaleX(0);transform-origin:left;transition:transform .3s;
+}
+.blog-card:hover::before{transform:scaleX(1);}
+.blog-num{font-family:var(--mono);font-size:10px;color:var(--muted2);letter-spacing:1px;margin-bottom:12px;}
+.blog-title{font-size:15px;font-weight:700;color:var(--text);letter-spacing:-.3px;line-height:1.4;margin-bottom:10px;transition:color .2s;}
+.blog-card:hover .blog-title{color:var(--accent);}
+.blog-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
+.blog-tag{font-family:var(--mono);font-size:9px;color:var(--accent);background:rgba(255,69,0,0.07);border:1px solid rgba(255,69,0,0.18);padding:2px 8px;letter-spacing:.5px;}
+.blog-link{font-family:var(--mono);font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:1px;transition:color .2s;border-bottom:1px solid var(--border2);padding-bottom:2px;}
+.blog-link:hover{color:var(--accent);border-color:var(--accent);}
+@media(max-width:900px){.blog-grid{grid-template-columns:1fr;}}
+
 /* ━━━ FEATURE 1: COMMAND PALETTE ━━━ */
 #cmd-overlay{position:fixed;inset:0;z-index:9998;background:rgba(0,0,0,0.7);backdrop-filter:blur(8px);display:none;align-items:flex-start;justify-content:center;padding-top:15vh;}
 #cmd-overlay.open{display:flex;}
@@ -1424,6 +1447,7 @@ footer{
     <li><a href="#skills" class="nl">Skills</a></li>
     <li><a href="#techstack" class="nl">Stack</a></li>
     <li><a href="#cp" class="nl">More</a></li>
+    <li><a href="#blog" class="nl">Blog</a></li>
     <li><a href="#contact" class="nl">Contact</a></li>
   </ul>
   <a href="https://www.linkedin.com/in/sameer-ahmed-profile/" target="_blank" class="nav-cta">LinkedIn ↗</a>
@@ -1873,6 +1897,34 @@ footer{
   </div>
   <div class="proj-section-cta">
     <a href="https://github.com/sameer-sde" target="_blank" class="btn-primary">View All on GitHub ↗</a>
+  </div>
+</section>
+
+
+<!-- BLOG -->
+<div class="sec-divider"></div>
+<section class="sec" id="blog">
+  <div class="sec-label">Writing</div>
+  <h2 class="sec-title">Blog Posts</h2>
+  <div class="blog-grid">
+    <div class="blog-card">
+      <div class="blog-num">001 · dev.to</div>
+      <div class="blog-title">How I Built a Real-Time Fraud Detection System That Handles 71,000 RPS at p95 &lt;6ms</div>
+      <div class="blog-tags"><span class="blog-tag">Go</span><span class="blog-tag">ML</span><span class="blog-tag">ONNX</span><span class="blog-tag">AWS</span></div>
+      <a href="https://dev.to/sameer_ahmed_/how-i-built-a-real-time-fraud-detection-system-that-handles-71000-rps-at-p95-6ms-205k" target="_blank" class="blog-link">Read on dev.to ↗</a>
+    </div>
+    <div class="blog-card">
+      <div class="blog-num">002 · dev.to</div>
+      <div class="blog-title">Building a Distributed Rate Limiter That Handles 18,769 req/s with Redis Lua Scripts</div>
+      <div class="blog-tags"><span class="blog-tag">Go</span><span class="blog-tag">Redis</span><span class="blog-tag">Distributed</span><span class="blog-tag">Lua</span></div>
+      <a href="https://dev.to/sameer_ahmed_/building-a-distributed-rate-limiter-that-handles-18769-reqs-with-redis-lua-scripts-1bpm" target="_blank" class="blog-link">Read on dev.to ↗</a>
+    </div>
+    <div class="blog-card">
+      <div class="blog-num">003 · dev.to</div>
+      <div class="blog-title">I Built a Vector Search Engine from Scratch — Here's What I Learned</div>
+      <div class="blog-tags"><span class="blog-tag">Java</span><span class="blog-tag">HNSW</span><span class="blog-tag">RAG</span><span class="blog-tag">ML</span></div>
+      <a href="https://dev.to/sameer_ahmed_/i-built-a-vector-search-engine-from-scratch-heres-what-i-learned-4lh5" target="_blank" class="blog-link">Read on dev.to ↗</a>
+    </div>
   </div>
 </section>
 
