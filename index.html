@@ -35,7 +35,7 @@ body{
   background:var(--bg);
   color:var(--text);
   overflow-x:hidden;
-  cursor:none;
+  
 }
 
 
@@ -312,7 +312,7 @@ nav.scrolled{
 .sdot:hover{border-color:var(--muted2);}
 
 /* ━━━ FEATURE 5: CUSTOM CURSOR TRAIL ━━━ */
-.trail{position:fixed;pointer-events:none!important;z-index:0;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%);transition:opacity .4s;}
+
 
 /* ━━━ FEATURE 6: STATS TICKER AT TOP ━━━ */
 .stats-ticker{
@@ -375,22 +375,9 @@ nav.scrolled{
 }
 
 /* ── CURSOR GLOW ── */
-#cur{
-  position:fixed;width:12px;height:12px;
-  background:var(--accent);border-radius:50%;
-  pointer-events:none;z-index:9999;
-  transform:translate(-50%,-50%);
-  transition:width .2s,height .2s,opacity .2s;
-  mix-blend-mode:difference;
-}
-#cur-glow{pointer-events:none!important;
-  position:fixed;width:300px;height:300px;border-radius:50%;
-  background:radial-gradient(circle,rgba(255,69,0,0.06) 0%,transparent 70%);
-  pointer-events:none;z-index:1;
-  transform:translate(-50%,-50%);
-  transition:transform .08s ease-out;
-}
-#cur.big{width:40px;height:40px;}
+
+
+
 
 /* ── GRADIENT MESH BACKGROUND ── */
 .mesh{
@@ -984,7 +971,7 @@ footer{
 
 /* ── MOBILE ── */
 @media(max-width:900px){
-  body{cursor:auto;}#cur,#cur-glow{pointer-events:none!important;display:none;}
+  body{cursor:auto;}#cur,
   nav{padding:16px 20px;}nav.scrolled{padding:12px 20px;}
   .nav-links{display:none;}
   #hero{grid-template-columns:1fr;padding:100px 20px 60px;gap:40px;}
@@ -1354,8 +1341,8 @@ footer{
 <div class="stars" id="stars"></div>
 
 <!-- CURSOR -->
-<div id="cur"></div>
-<div id="cur-glow"></div>
+
+
 
 <!-- UI -->
 
@@ -1946,17 +1933,7 @@ footer{
   }
 })();
 
-// CURSOR GLOW
-var cur=document.getElementById('cur');
-var glow=document.getElementById('cur-glow');
-var gx=0,gy=0;
-document.addEventListener('mousemove',function(e){
-  cur.style.left=e.clientX+'px';cur.style.top=e.clientY+'px';
-  gx+=(e.clientX-gx)*0.08;gy+=(e.clientY-gy)*0.08;
-  glow.style.left=gx+'px';glow.style.top=gy+'px';
-});
-function animGlow(){gx+=(parseFloat(cur.style.left||0)-gx)*0.06;gy+=(parseFloat(cur.style.top||0)-gy)*0.06;glow.style.left=gx+'px';glow.style.top=gy+'px';requestAnimationFrame(animGlow);}
-animGlow();
+
 document.querySelectorAll('a,button,.proj-card,.atag,.skill-row,.exp-item').forEach(function(el){
   el.addEventListener('mouseenter',function(){cur.classList.add('big');});
   el.addEventListener('mouseleave',function(){cur.classList.remove('big');});
