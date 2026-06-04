@@ -327,7 +327,7 @@ nav.scrolled{
 
 /* ━━━ FEATURE 7: ANIMATED HERO BACKGROUND GRID ━━━ */
 .hero-grid-bg{
-  position:absolute;inset:0;z-index:0;
+  position:absolute;inset:0;z-index:0;pointer-events:none;
   background-image:
     linear-gradient(rgba(255,69,0,0.03) 1px,transparent 1px),
     linear-gradient(90deg,rgba(255,69,0,0.03) 1px,transparent 1px);
@@ -2229,21 +2229,7 @@ window.addEventListener('scroll',function(){
   }
 })();
 
-// ━━━ CURSOR TRAILS ━━━
-(function(){
-  var trails=[];var NUM=8;
-  for(var i=0;i<NUM;i++){
-    var t=document.createElement('div');
-    t.className='trail';
-    var size=Math.max(3,8-i);
-    t.style.cssText='width:'+size+'px;height:'+size+'px;opacity:'+(0.6-i*0.06)+';position:fixed;pointer-events:none;z-index:9994;border-radius:50%;background:var(--accent);transform:translate(-50%,-50%);transition:left '+(0.05+i*0.04)+'s,top '+(0.05+i*0.04)+'s;';
-    document.body.appendChild(t);
-    trails.push(t);
-  }
-  document.addEventListener('mousemove',function(e){
-    trails.forEach(function(t){t.style.left=e.clientX+'px';t.style.top=e.clientY+'px';});
-  });
-})();
+
 
 // ━━━ CARD SPOTLIGHT ━━━
 document.querySelectorAll('.proj-card,.ap-card').forEach(function(card){
