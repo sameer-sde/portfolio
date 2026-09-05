@@ -7,7 +7,7 @@
 
 ## 👤 About
 
-Third-year Computer Science student at **Muffakham Jah College of Engineering, Hyderabad** — specializing in distributed systems, ML inference, and open source.
+Third-year Computer Science student at **Osmania University, Hyderabad** — specializing in distributed systems, ML inference, and open source.
 
 ---
 
@@ -51,7 +51,7 @@ Built with zero frameworks — pure HTML, CSS & JavaScript.
 | Project | Stack | Highlight |
 |---------|-------|-----------|
 | [Sentinel](https://github.com/sameer-sde/sentinel) | Go · Python · XGBoost · ONNX · AWS | 71K RPS at p95 <6ms |
-| [Distributed Rate Limiter](https://github.com/sameer-sde/ratelimit) | Go · Redis · Lua · Docker · GCP | 18,769 req/s · 61% throughput ↑ |
+| [RaftKV](https://github.com/sameer-sde/raftKv) | Python | 38.9 ops/sec · 5.9ms leader re-election |
 | [Vektr](https://github.com/sameer-sde/vektr) | Java · Python · Undertow | recall@10 = 0.984 |
 
 ### AI Applications
