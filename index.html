@@ -1555,18 +1555,18 @@ footer{
     </div>
 
     <div class="proj-card">
-      <div class="proj-badge proj-badge-systems">⚡ Distributed Systems</div>
-      <div class="proj-num">002</div>
-      <div class="proj-name">Distributed Rate Limiter</div>
-      <div class="proj-stack">Go · Redis · Lua · React · Docker · GCP</div>
-      <div class="proj-metric-row">
-        <div class="proj-metric-item"><div class="proj-metric-val orange">18,769</div><div class="proj-metric-lbl">req/s</div></div>
-        <div class="proj-metric-item"><div class="proj-metric-val blue">16ms</div><div class="proj-metric-lbl">p95</div></div>
-        <div class="proj-metric-item"><div class="proj-metric-val green">61%</div><div class="proj-metric-lbl">throughput ↑</div></div>
+        <div class="proj-badge proj-badge-systems">⚡ Distributed Systems</div>
+        <div class="proj-num">002</div>
+        <div class="proj-name">RaftKV — Distributed Key-Value Store with Raft Consensus</div>
+        <div class="proj-stack">Python</div>
+        <div class="proj-metric-row">
+          <div class="proj-metric-item"><div class="proj-metric-val orange">38.9</div><div class="proj-metric-lbl">ops/sec</div></div>
+          <div class="proj-metric-item"><div class="proj-metric-val blue">28.6ms</div><div class="proj-metric-lbl">p99 latency</div></div>
+          <div class="proj-metric-item"><div class="proj-metric-val green">5.9ms</div><div class="proj-metric-lbl">re-election</div></div>
+        </div>
+        <div class="proj-desc">From-scratch Raft consensus (Ongaro &amp; Ousterhout, 2014) — leader election, log replication with fast-backtrack conflict resolution, and majority-commit rules. Fault-injection tests simulate node crashes and network partitions; found and fixed a real lock-contention bug, cutting re-election stalls from 3,000+ms to 5.9ms. Zero external dependencies.</div>
+        <a href="https://github.com/sameer-sde/raftKv" target="_blank" class="proj-link">GitHub ↗</a>
       </div>
-      <div class="proj-desc">4 atomic algorithms via Redis Lua scripts. Consistent hash ring with 150 virtual nodes across 3 Redis shards. Tuned connection pool 10→50 per shard. Live React dashboard on GCP.</div>
-      <a href="https://github.com/sameer-sde/ratelimit" target="_blank" class="proj-link">GitHub ↗</a>
-    </div>
 
     <div class="proj-card">
       <div class="proj-badge proj-badge-ai">🧠 AI · ML</div>
