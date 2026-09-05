@@ -65,6 +65,7 @@ Built with zero frameworks — pure HTML, CSS & JavaScript.
 ### Open Source Contributions
 | Repo | Stars | PR |
 |------|-------|-----|
+| [vLLM](https://github.com/vllm-project/vllm/pull/54832) | 90K+ | #54832 merged |
 | [langchain4j](https://github.com/langchain4j/langchain4j/pull/5341) | 12K+ | #5341 merged |
 | [linkedin/cruise-control](https://github.com/linkedin/cruise-control/pull/2377) | 3K+ | #2377 merged |
 
