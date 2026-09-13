@@ -1439,7 +1439,8 @@ footer{
       <div class="cmd-section">
         <div class="cmd-section-label">Navigate</div>
         <div class="cmd-item" data-href="#about"><span class="cmd-item-icon">👤</span><div class="cmd-item-text"><div class="cmd-item-name">About</div><div class="cmd-item-desc">Background & story</div></div></div>
-        <div class="cmd-item" data-href="#projects"><span class="cmd-item-icon">⚡</span><div class="cmd-item-text"><div class="cmd-item-name">Projects</div><div class="cmd-item-desc">Sentinel, Rate Limiter, Vektr</div></div></div>
+        <div class="cmd-item" data-href="#projects"><span class="cmd-item-icon">⚡</span><div class="cmd-item-text"><div class="cmd-item-name">Projects</div><div class="cmd-item-desc">Sentinel, RaftKV, Vektr</div></div></div>
+        <div class="cmd-item" data-href="#research"><span class="cmd-item-icon">📄</span><div class="cmd-item-text"><div class="cmd-item-name">Research</div><div class="cmd-item-desc">Quantization benchmark, published paper</div></div></div>
         <div class="cmd-item" data-href="#experience"><span class="cmd-item-icon">🔀</span><div class="cmd-item-text"><div class="cmd-item-name">Experience</div><div class="cmd-item-desc">Open source contributions</div></div></div>
         <div class="cmd-item" data-href="#skills"><span class="cmd-item-icon">🛠️</span><div class="cmd-item-text"><div class="cmd-item-name">Skills</div><div class="cmd-item-desc">Go, Java, Python, Redis, AWS...</div></div></div>
         <div class="cmd-item" data-href="#cp"><span class="cmd-item-icon">💻</span><div class="cmd-item-text"><div class="cmd-item-name">More Projects</div><div class="cmd-item-desc">NexusNews, GlobalPD, StreetMart...</div></div></div>
@@ -1489,6 +1490,7 @@ footer{
   <ul class="nav-links">
     <li><a href="#about" class="nl">About</a></li>
     <li><a href="#projects" class="nl">Projects</a></li>
+    <li><a href="#research" class="nl">Research</a></li>
     <li><a href="#experience" class="nl">Experience</a></li>
     <li><a href="#skills" class="nl">Skills</a></li>
     <li><a href="#techstack" class="nl">Stack</a></li>
@@ -1824,6 +1826,87 @@ footer{
       </details>
 
       <a href="https://github.com/sameer-sde/vektr" target="_blank" class="proj-link">GitHub ↗</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<div class="sec-divider"></div>
+<section class="sec" id="research">
+  <div class="sec-label reveal">Published Work</div>
+  <h2 class="sec-title reveal rd1">Research <em>& Publications</em></h2>
+  <div class="proj-grid">
+
+    <div class="proj-card proj-card-full">
+      <div class="proj-badge proj-badge-featured">📄 Independent Research</div>
+      <div class="proj-num">001</div>
+      <div class="proj-name">Quantization Trade-offs for LLM Inference on Apple Silicon</div>
+      <div class="proj-stack">MLX · llama.cpp · Python · Matplotlib · LaTeX</div>
+      <div class="proj-metric-row">
+        <div class="proj-metric-item"><div class="proj-metric-val orange">360</div><div class="proj-metric-lbl">inference runs</div></div>
+        <div class="proj-metric-item"><div class="proj-metric-val blue">17–64%</div><div class="proj-metric-lbl">MLX faster</div></div>
+        <div class="proj-metric-item"><div class="proj-metric-val green">100%</div><div class="proj-metric-lbl">8-bit accuracy</div></div>
+        <div class="proj-metric-item"><div class="proj-metric-val purple">3</div><div class="proj-metric-lbl">models tested</div></div>
+      </div>
+      <div class="proj-desc">Designed and ran a controlled empirical benchmark of LLM inference on Apple Silicon — MLX vs. llama.cpp, 4-bit vs. 8-bit quantization — across 3 open-weight models. Found MLX consistently faster at matched quantization, that 8-bit was lossless in testing while 4-bit showed a measurable accuracy cost in code and arithmetic tasks, and that llama.cpp memory usage is driven by context-window size, not quantization level, verified via direct inspection of runtime model metadata. Published as a citable paper with a permanent DOI, alongside full code and raw data.</div>
+
+      <details class="case-study">
+        <summary>Read the full case study</summary>
+        <div class="case-study-body">
+
+          <div class="cs-block">
+            <div class="cs-h">The Problem</div>
+            <p class="cs-p">Deploying LLMs locally requires quantization to fit consumer hardware, but nearly every published benchmark of these trade-offs targets NVIDIA GPUs — leaving Apple Silicon developers guessing which framework and quantization level to actually use.</p>
+          </div>
+
+          <div class="cs-block">
+            <div class="cs-h">Approach</div>
+            <p class="cs-p">Built two automated Python harnesses: one measuring generation speed and peak memory across 180 runs (3 models × 2 frameworks × 2 quantization levels × 5 prompts × 3 repeats), and one measuring task accuracy across another 180 runs (15 questions per configuration — math, factual recall, and code graded by actually executing the generated function against real test cases).</p>
+          </div>
+
+          <div class="cs-block">
+            <div class="cs-h">Bugs Found &amp; Fixed Along the Way</div>
+            <table class="cs-table">
+              <tr><th>Bug</th><th>Root Cause</th><th>Fix</th></tr>
+              <tr><td>Inflated llama.cpp memory readings</td><td>mmap-based model loading counted reclaimable file pages as active memory</td><td>Disabled mmap (--no-mmap) for true resident-memory measurement</td></tr>
+              <tr><td>Missing GGUF speed data (90 rows)</td><td>llama-cli writes stats directly to the terminal, bypassing Python's subprocess capture</td><td>Added --simple-io flag to route output through stdout</td></tr>
+            </table>
+          </div>
+
+          <div class="cs-block">
+            <div class="cs-h">Key Finding</div>
+            <p class="cs-p">Llama-3.2-3B and Phi-3.5-mini used ~10.5GB of memory at both 4-bit and 8-bit quantization — nearly identical, despite a 2x difference in weight precision. Verified by inspecting each model's runtime context-window value directly: Llama's default context (79,872 tokens) is 2.4x larger than Qwen2.5-3B's (32,768), which explains the memory gap far better than quantization does.</p>
+          </div>
+
+          <div class="cs-block">
+            <div class="cs-h">Results</div>
+            <div class="cs-shots">
+              <div class="cs-shot">
+                <img src="https://github.com/sameer-sde/llm-quantization-benchmark/raw/main/figures/fig1_speed_comparison.png" alt="4-bit inference speed comparison, MLX vs llama.cpp, across three models" loading="lazy">
+                <div class="cs-shot-cap"><strong>Speed comparison</strong> — MLX consistently outperforms llama.cpp at 4-bit across all three models tested</div>
+              </div>
+              <div class="cs-shot">
+                <img src="https://github.com/sameer-sde/llm-quantization-benchmark/raw/main/figures/fig2_speed_accuracy.png" alt="Speed-accuracy tradeoff scatter plot across all 12 configurations" loading="lazy">
+                <div class="cs-shot-cap"><strong>Speed vs. accuracy</strong> — every 8-bit configuration scored 100%, while 4-bit configs traded some accuracy for speed</div>
+              </div>
+              <div class="cs-shot">
+                <img src="https://github.com/sameer-sde/llm-quantization-benchmark/raw/main/figures/fig3_memory_context.png" alt="llama.cpp memory usage by model, showing context-size dependence" loading="lazy">
+                <div class="cs-shot-cap"><strong>Memory by model</strong> — Qwen2.5-3B uses a fraction of Llama/Phi's memory, driven entirely by context-window size</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cs-block">
+            <div class="cs-h">What Makes This Different</div>
+            <p class="cs-p">Most student ML work stops at "I benchmarked X." This is a full empirical research cycle — hypothesis, controlled experiment, real bugs diagnosed and fixed mid-study, a verified (not assumed) causal mechanism, and a published, citable, peer-reviewable artifact with a permanent DOI.</p>
+          </div>
+
+        </div>
+      </details>
+
+      <a href="https://doi.org/10.5281/zenodo.22738012" target="_blank" class="proj-link">Read the Paper (DOI) ↗</a>
+      <a href="https://github.com/sameer-sde/llm-quantization-benchmark" target="_blank" class="proj-link" style="margin-left:16px;">View on GitHub ↗</a>
     </div>
 
   </div>
