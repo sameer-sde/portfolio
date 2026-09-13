@@ -1383,14 +1383,6 @@ footer{
 .lesson-fix strong{color:var(--text);}
 @media(max-width:900px){.lesson-grid{grid-template-columns:1fr;}}
 
-/* ── BUILD LOG ── */
-.buildlog-list{display:flex;flex-direction:column;}
-.buildlog-item{display:grid;grid-template-columns:110px 1fr;gap:24px;padding:18px 0;border-bottom:1px solid var(--border);}
-.buildlog-item:first-child{padding-top:0;}
-.buildlog-item:last-child{border-bottom:none;padding-bottom:0;}
-.buildlog-date{font-family:var(--mono);font-size:10px;color:var(--muted2);letter-spacing:.5px;padding-top:2px;}
-.buildlog-text{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;}
-.buildlog-text strong{color:var(--text);font-weight:600;}
 </style>
 
 </head>
@@ -2231,27 +2223,6 @@ footer{
       <div class="blog-tags"><span class="blog-tag">Python</span><span class="blog-tag">Raft</span><span class="blog-tag">DistributedSystems</span></div>
       <a href="https://dev.to/sameer_ahmed_/i-built-a-distributed-key-value-store-with-raft-consensus-from-scratch-heres-what-i-learned-31fg" target="_blank" class="blog-link">Read on dev.to ↗</a>
     </div>
-</section>
-
-<!-- BUILD LOG -->
-<div class="sec-divider"></div>
-<section class="sec" id="buildlog">
-  <div class="sec-label reveal">Site Changelog</div>
-  <h2 class="sec-title reveal rd1">Build <em>Log</em></h2>
-  <div class="buildlog-list">
-    <div class="buildlog-item">
-      <div class="buildlog-date">Sep 2026</div>
-      <div class="buildlog-text">Added full case studies with real, self-captured screenshots to <strong>Sentinel</strong>, <strong>RaftKV</strong>, and <strong>Vektr</strong> — live dashboards, drift detection firing, and real search results, not mockups.</div>
-    </div>
-    <div class="buildlog-item">
-      <div class="buildlog-date">Sep 2026</div>
-      <div class="buildlog-text">Added a <strong>Lessons Learned</strong> section pulling real postmortems and bugs found across projects — including the RaftKV lock-contention fix that cut re-election time by 99.8%.</div>
-    </div>
-    <div class="buildlog-item">
-      <div class="buildlog-date">Sep 2026</div>
-      <div class="buildlog-text">Added live proof screenshots and restructured READMEs across <strong>sentinel</strong>, <strong>vektr</strong>, and <strong>ratelimit</strong> repos to match a consistent documentation pattern.</div>
-    </div>
-  </div>
 </section>
 
 <!-- CONTACT -->
