@@ -1372,8 +1372,26 @@ footer{
   transform:translateY(-3px)!important;
   box-shadow:0 8px 24px rgba(0,0,0,0.3)!important;
 }
+/* ── LESSONS LEARNED ── */
+.lesson-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+.lesson-card{background:var(--surface);padding:28px;transition:background .25s;}
+.lesson-card:hover{background:var(--surface2);}
+.lesson-proj{font-family:var(--mono);font-size:9px;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:10px;}
+.lesson-title{font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px;letter-spacing:-.2px;}
+.lesson-body{font-size:13px;color:var(--muted);line-height:1.75;font-weight:300;margin-bottom:10px;}
+.lesson-fix{font-family:var(--mono);font-size:11px;color:var(--green);border-top:1px solid var(--border);padding-top:10px;}
+.lesson-fix strong{color:var(--text);}
+@media(max-width:900px){.lesson-grid{grid-template-columns:1fr;}}
 
-</style>
+/* ── BUILD LOG ── */
+.buildlog-list{display:flex;flex-direction:column;}
+.buildlog-item{display:grid;grid-template-columns:110px 1fr;gap:24px;padding:18px 0;border-bottom:1px solid var(--border);}
+.buildlog-item:first-child{padding-top:0;}
+.buildlog-item:last-child{border-bottom:none;padding-bottom:0;}
+.buildlog-date{font-family:var(--mono);font-size:10px;color:var(--muted2);letter-spacing:.5px;padding-top:2px;}
+.buildlog-text{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;}
+.buildlog-text strong{color:var(--text);font-weight:600;}
+
 </head>
 <body>
 
@@ -1818,6 +1836,44 @@ footer{
   </div>
 </section>
 
+<!-- LESSONS LEARNED -->
+<div class="sec-divider"></div>
+<section class="sec" id="lessons">
+  <div class="sec-label reveal">Postmortems</div>
+  <h2 class="sec-title reveal rd1">Lessons <em>Learned</em></h2>
+  <div class="lesson-grid">
+
+    <div class="lesson-card">
+      <div class="lesson-proj">RaftKV</div>
+      <div class="lesson-title">Lock held across a blocking network call</div>
+      <div class="lesson-body">The election-timer loop called into election logic while still holding the node's lock, which included sequential blocking RPC calls to every peer. This blocked the node from responding to incoming votes during its own election attempt, occasionally stalling re-election for 3,000+ms after a partition.</div>
+      <div class="lesson-fix"><strong>Fix:</strong> release the lock before making any network call. Re-election time: 3,000+ms → 5.9ms.</div>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-proj">RaftKV</div>
+      <div class="lesson-title">Stale-read race on the client</div>
+      <div class="lesson-body">The client queried nodes in a fixed order, ignoring which node was the last known leader. Right after a write, a read could hit a follower that hadn't yet applied that entry, or hit a now-dead old leader with no fallback.</div>
+      <div class="lesson-fix"><strong>Fix:</strong> client now prefers the last-known leader first, then falls back across the cluster.</div>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-proj">Sentinel</div>
+      <div class="lesson-title">Default connection pool was the real bottleneck</div>
+      <div class="lesson-body">Serving predictions at scale exposed that batching alone wasn't enough — with 32 requests batched per inference call, the wait window and downstream connection handling needed tuning together, not independently.</div>
+      <div class="lesson-fix"><strong>Fix:</strong> tuned batch window to 5ms with maxBatch=32. Result: 5.67x average batch size, p99 under 2ms warm.</div>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-proj">Vektr</div>
+      <div class="lesson-title">Dense retrieval alone missed exact keyword matches</div>
+      <div class="lesson-body">Pure HNSW vector search performed well on semantic similarity but occasionally missed results that shared exact keywords with the query — a known weakness of dense-only retrieval.</div>
+      <div class="lesson-fix"><strong>Fix:</strong> added BM25 hybrid retrieval with Reciprocal Rank Fusion, combining dense and sparse signals without needing to normalize their differently-scaled scores.</div>
+    </div>
+
+  </div>
+</section>
+
 <!-- EXPERIENCE -->
 <div class="sec-divider"></div>
 <section class="sec" id="experience">
@@ -2174,6 +2230,27 @@ footer{
       <div class="blog-tags"><span class="blog-tag">Python</span><span class="blog-tag">Raft</span><span class="blog-tag">DistributedSystems</span></div>
       <a href="https://dev.to/sameer_ahmed_/i-built-a-distributed-key-value-store-with-raft-consensus-from-scratch-heres-what-i-learned-31fg" target="_blank" class="blog-link">Read on dev.to ↗</a>
     </div>
+</section>
+
+<!-- BUILD LOG -->
+<div class="sec-divider"></div>
+<section class="sec" id="buildlog">
+  <div class="sec-label reveal">Site Changelog</div>
+  <h2 class="sec-title reveal rd1">Build <em>Log</em></h2>
+  <div class="buildlog-list">
+    <div class="buildlog-item">
+      <div class="buildlog-date">Sep 2026</div>
+      <div class="buildlog-text">Added full case studies with real, self-captured screenshots to <strong>Sentinel</strong>, <strong>RaftKV</strong>, and <strong>Vektr</strong> — live dashboards, drift detection firing, and real search results, not mockups.</div>
+    </div>
+    <div class="buildlog-item">
+      <div class="buildlog-date">Sep 2026</div>
+      <div class="buildlog-text">Added a <strong>Lessons Learned</strong> section pulling real postmortems and bugs found across projects — including the RaftKV lock-contention fix that cut re-election time by 99.8%.</div>
+    </div>
+    <div class="buildlog-item">
+      <div class="buildlog-date">Sep 2026</div>
+      <div class="buildlog-text">Added live proof screenshots and restructured READMEs across <strong>sentinel</strong>, <strong>vektr</strong>, and <strong>ratelimit</strong> repos to match a consistent documentation pattern.</div>
+    </div>
+  </div>
 </section>
 
 <!-- CONTACT -->
