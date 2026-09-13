@@ -733,6 +733,42 @@ nav.scrolled{
 .proj-metric-val.green{color:var(--green);}
 .proj-metric-val.purple{color:var(--purple);}
 .proj-metric-lbl{font-family:var(--mono);font-size:9px;color:var(--muted2);letter-spacing:1px;margin-top:3px;}
+/* ── CASE STUDY EXPANDER ── */
+.case-study{margin-top:20px;border:1px solid var(--border2);background:rgba(255,255,255,0.02);}
+.case-study summary{
+  list-style:none;cursor:pointer;padding:12px 16px;
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--mono);font-size:11px;color:var(--muted);
+  letter-spacing:1px;transition:color .2s;
+}
+.case-study summary::-webkit-details-marker{display:none;}
+.case-study summary:hover{color:var(--accent);}
+.case-study summary::after{content:'+';font-size:14px;color:var(--muted2);transition:transform .25s;}
+.case-study[open] summary::after{content:'−';color:var(--accent);}
+.case-study-body{padding:4px 16px 24px;border-top:1px solid var(--border);}
+.cs-block{margin-top:20px;}
+.cs-block:first-child{margin-top:20px;}
+.cs-h{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;}
+.cs-p{font-size:13px;color:var(--muted);line-height:1.8;font-weight:300;}
+.cs-p strong{color:var(--text);font-weight:600;}
+.cs-table{width:100%;border-collapse:collapse;margin-top:8px;}
+.cs-table th,.cs-table td{
+  font-family:var(--mono);font-size:11px;text-align:left;
+  padding:8px 10px;border-bottom:1px solid var(--border);color:var(--muted);
+}
+.cs-table th{color:var(--muted2);letter-spacing:1px;font-weight:500;text-transform:uppercase;font-size:9px;}
+.cs-table td:first-child{color:var(--text);font-weight:500;}
+.cs-list{list-style:none;display:flex;flex-direction:column;gap:10px;}
+.cs-list li{font-size:13px;color:var(--muted);line-height:1.7;font-weight:300;padding-left:16px;position:relative;}
+.cs-list li::before{content:'→';position:absolute;left:0;color:var(--accent);}
+.cs-shots{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;}
+.cs-shot{border:1px solid var(--border2);background:var(--bg);overflow:hidden;}
+.cs-shot img{width:100%;display:block;}
+.cs-shot-cap{font-family:var(--mono);font-size:9px;color:var(--muted2);letter-spacing:.5px;padding:8px 10px;border-top:1px solid var(--border);line-height:1.5;}
+.cs-shot-cap strong{color:var(--text);}
+@media(max-width:900px){.cs-shots{grid-template-columns:1fr;}}
+.cs-list li strong{color:var(--text);font-weight:600;}
+@media(max-width:900px){.cs-table{font-size:10px;}.cs-table th,.cs-table td{padding:6px;}}
 
 /* ap-card shine too */
 .ap-card::before{
@@ -1551,6 +1587,68 @@ footer{
         <div class="proj-metric-item"><div class="proj-metric-val orange">99%</div><div class="proj-metric-lbl">cache hit</div></div>
       </div>
       <div class="proj-desc">Exported XGBoost to ONNX served via Go HTTP server. Trained on 284K transactions achieving PR-AUC 0.87, 86% recall. Zero-downtime deploys via atomic.Pointer hot-swap and A/B traffic splitting with Prometheus metrics on AWS EC2.</div>
+
+      <details class="case-study">
+        <summary>Read the full case study</summary>
+        <div class="case-study-body">
+
+          <div class="cs-block">
+            <div class="cs-h">The Problem</div>
+            <p class="cs-p">Fraud detection sits directly in the transaction path — every millisecond of latency is friction for a legitimate customer, and every missed signal is a fraud loss. Most teams serve models in the same language they trained them in (Python), but Python's interpreter overhead makes it hard to sustain high, consistent throughput under load.</p>
+          </div>
+
+          <div class="cs-block">
+            <div class="cs-h">Approach</div>
+            <p class="cs-p">Trained an XGBoost classifier in Python on 284K credit-card transactions (0.17% fraud rate — a hard class-imbalance problem), then exported it to ONNX. A Go HTTP server loads the ONNX model and serves predictions, removing Python from the hot path entirely while keeping the ML tooling where it's strongest.</p>
+          </div>
+
+          <div class="cs-block">
+            <div class="cs-h">Key Engineering Decisions</div>
+            <table class="cs-table">
+              <tr><th>Layer</th><th>What it adds</th><th>Win</th></tr>
+              <tr><td>Imbalance handling</td><td>scale_pos_weight vs SMOTE, compared</td><td>PR-AUC 0.87, recall +6%</td></tr>
+              <tr><td>Threshold tuning</td><td>Cost-based optimization (0.41 vs default 0.5)</td><td>₹650 saved per 57K rows</td></tr>
+              <tr><td>ONNX export</td><td>Cross-language model serving</td><td>Python dropped from hot path</td></tr>
+              <tr><td>Batching</td><td>1 goroutine owns the session, 32 max / 5ms wait</td><td>5.67x avg batch size</td></tr>
+              <tr><td>LRU cache</td><td>FNV-1a hash, 2s TTL</td><td>99% hit rate, ~500x latency drop</td></tr>
+              <tr><td>Hot-swap</td><td>atomic.Pointer[modelBundle]</td><td>Zero-downtime deploys</td></tr>
+              <tr><td>A/B routing</td><td>Two live model bundles, traffic-split by %</td><td>Real canary deployments</td></tr>
+              <tr><td>Drift detection</td><td>Welford's online stats per feature</td><td>Catches data drift in flight</td></tr>
+            </table>
+          </div>
+
+          <div class="cs-block">
+            <div class="cs-h">Results</div>
+            <ul class="cs-list">
+              <li><strong>71,483 RPS</strong> on cache-hot traffic, <strong>53,636 RPS</strong> on mixed traffic</li>
+              <li><strong>5.46ms p95 latency</strong> under mixed load</li>
+              <li><strong>Zero errors</strong> across 7.8M requests in k6 load testing</li>
+              <li><strong>PR-AUC 0.87</strong>, 86% recall / 74% precision at the tuned threshold</li>
+            </ul>
+          </div>
+
+          <div class="cs-block">
+            <div class="cs-h">Live Dashboard</div>
+            <div class="cs-shots">
+              <div class="cs-shot">
+                <img src="https://github.com/sameer-sde/sentinel/raw/main/dashboard/screenshots/dashboard-live.png" alt="Sentinel live dashboard with drift detection and A/B test active" loading="lazy">
+                <div class="cs-shot-cap"><strong>Live traffic</strong> — RPS chart, drift detection firing (27 features flagged), A/B test active</div>
+              </div>
+              <div class="cs-shot">
+                <img src="https://github.com/sameer-sde/sentinel/raw/main/dashboard/screenshots/ab-test-variants.png" alt="Sentinel A/B test variant comparison" loading="lazy">
+                <div class="cs-shot-cap"><strong>Real A/B split</strong> — Variant A vs Variant B live prediction counts, model config, load tester</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cs-block">
+            <div class="cs-h">What Makes This Different</div>
+            <p class="cs-p">Most student ML projects stop at "trained a model, got X% accuracy." Sentinel goes further into the serving problem — the part that actually matters in production: latency under load, safe deploys, live experimentation, and monitoring for silent failure modes like data drift.</p>
+          </div>
+
+        </div>
+      </details>
+
       <a href="https://github.com/sameer-sde/sentinel" target="_blank" class="proj-link">View on GitHub ↗</a>
     </div>
 
@@ -1565,6 +1663,80 @@ footer{
           <div class="proj-metric-item"><div class="proj-metric-val green">5.9ms</div><div class="proj-metric-lbl">re-election</div></div>
         </div>
         <div class="proj-desc">From-scratch Raft consensus (Ongaro &amp; Ousterhout, 2014) — leader election, log replication with fast-backtrack conflict resolution, and majority-commit rules. Fault-injection tests simulate node crashes and network partitions; found and fixed a real lock-contention bug, cutting re-election stalls from 3,000+ms to 5.9ms. Zero external dependencies.</div>
+
+        <details class="case-study">
+          <summary>Read the full case study</summary>
+          <div class="case-study-body">
+
+            <div class="cs-block">
+              <div class="cs-h">The Problem</div>
+              <p class="cs-p">Distributed consensus is one of the genuinely hard, foundational problems in systems engineering — it's the reason MIT's graduate distributed systems course (6.824) uses building Raft as its flagship assignment. Three nodes need to agree on a replicated, ordered log and stay consistent even when nodes crash, restart, or the network partitions — with zero external dependencies, no consensus library to lean on.</p>
+            </div>
+
+            <div class="cs-block">
+              <div class="cs-h">Approach</div>
+              <p class="cs-p">Implemented Raft (Ongaro &amp; Ousterhout, 2014) entirely in pure Python stdlib — the same algorithm behind etcd (which powers Kubernetes), CockroachDB, and Consul. Every piece — leader election, log replication, crash-safe persistence, and the fault-injection tests that verify all of it — was built from scratch, not delegated to a library.</p>
+            </div>
+
+            <div class="cs-block">
+              <div class="cs-h">Two Real Bugs Found &amp; Fixed</div>
+              <table class="cs-table">
+                <tr><th>Bug</th><th>Root Cause</th><th>Fix</th></tr>
+                <tr><td>Stalled re-election</td><td>Lock held across blocking network calls — node couldn't respond to incoming votes during its own election attempt</td><td>Release lock before making network calls: 3,000+ms → 5.9ms re-election, 7/8 → 8/8 success rate</td></tr>
+                <tr><td>Stale-read race</td><td>Client queried nodes in fixed order, ignoring last-known leader — could hit a follower mid-replication or a dead old leader</td><td>Client now prefers last-known leader first, falls back across cluster</td></tr>
+              </table>
+            </div>
+
+            <div class="cs-block">
+              <div class="cs-h">Fault-Injection Testing</div>
+              <ul class="cs-list">
+                <li><strong>Leader crash mid-operation</strong> — new leader elected, zero data loss, writes continue</li>
+                <li><strong>Network partition</strong> — minority side (incl. stale old leader) blocked from committing; majority keeps working</li>
+                <li><strong>Crashed node restart</strong> — node correctly catches back up via replication after rejoining</li>
+              </ul>
+            </div>
+
+            <div class="cs-block">
+              <div class="cs-h">Proof: Live Failover, Captured End-to-End</div>
+              <p class="cs-p" style="margin-bottom:12px;">Real screenshots from an actual running 3-node cluster — not mockups. Together they show a healthy cluster, a write committing, the leader crashing mid-session, and the data still being there once a new leader takes over.</p>
+              <div class="cs-shots">
+                <div class="cs-shot">
+                  <img src="https://github.com/sameer-sde/raftKv/raw/main/dashboard/screenshots/healthy-cluster.png" alt="Healthy 3-node Raft cluster with n1 as leader" loading="lazy">
+                  <div class="cs-shot-cap"><strong>1. Healthy cluster</strong> — all 3 nodes online, n1 elected leader</div>
+                </div>
+                <div class="cs-shot">
+                  <img src="https://github.com/sameer-sde/raftKv/raw/main/dashboard/screenshots/live-write.png" alt="A write committing across the Raft cluster" loading="lazy">
+                  <div class="cs-shot-cap"><strong>2. Write commits</strong> — SET replicates &amp; commits on all 3 nodes at once</div>
+                </div>
+                <div class="cs-shot">
+                  <img src="https://github.com/sameer-sde/raftKv/raw/main/dashboard/screenshots/leader-failover.png" alt="Automatic leader failover after a crash" loading="lazy">
+                  <div class="cs-shot-cap"><strong>3. Leader crashes</strong> — n3 auto-elected new leader at a higher term</div>
+                </div>
+                <div class="cs-shot">
+                  <img src="https://github.com/sameer-sde/raftKv/raw/main/dashboard/screenshots/data-survived.png" alt="Data integrity confirmed after failover" loading="lazy">
+                  <div class="cs-shot-cap"><strong>4. Data survived</strong> — GET still returns the value through the new leader</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="cs-block">
+              <div class="cs-h">Results</div>
+              <ul class="cs-list">
+                <li><strong>38.9 ops/sec</strong> write throughput, full consensus + replication path, p99 28.6ms</li>
+                <li><strong>2,195 ops/sec</strong> read throughput (served locally, no consensus round-trip)</li>
+                <li><strong>5.9ms avg</strong> leader re-election after crash (down from 3,000+ms)</li>
+                <li>Immediate replication on write (vs. waiting for heartbeat tick) <strong>doubled</strong> throughput: 19.6 → 38.9 ops/sec, p99 latency down 58%</li>
+              </ul>
+            </div>
+
+            <div class="cs-block">
+              <div class="cs-h">Known Simplifications (Documented, Not Oversights)</div>
+              <p class="cs-p">Reads can hit any node, including followers, so a read can be slightly stale mid-replication — production Raft systems solve this with "read index" or lease-based reads. No log compaction/snapshotting yet — the log grows unbounded, a natural next extension.</p>
+            </div>
+
+          </div>
+        </details>
+
         <a href="https://github.com/sameer-sde/raftKv" target="_blank" class="proj-link">GitHub ↗</a>
       </div>
 
@@ -1579,6 +1751,70 @@ footer{
         <div class="proj-metric-item"><div class="proj-metric-val orange">&lt;1ms</div><div class="proj-metric-lbl">cached</div></div>
       </div>
       <div class="proj-desc">Hand-rolled HNSW vector index (Malkov & Yashunin, 2018). Hybrid BM25 + dense retrieval with RRF fusion. HyDE query rewriting and atomic index persistence — loads in &lt;15ms on restart.</div>
+
+      <details class="case-study">
+        <summary>Read the full case study</summary>
+        <div class="case-study-body">
+
+          <div class="cs-block">
+            <div class="cs-h">The Problem</div>
+            <p class="cs-p">Every modern RAG stack leans on a vector database — Pinecone, Weaviate, Qdrant — treating approximate nearest-neighbor search as a solved, opaque dependency. Vektr asks what's actually inside that black box by building the HNSW index (Malkov &amp; Yashunin, 2018) — the same algorithm those products run — entirely from scratch, plus a hybrid retrieval layer on top of it.</p>
+          </div>
+
+          <div class="cs-block">
+            <div class="cs-h">Approach</div>
+            <p class="cs-p">A Java server hosts a hand-rolled HNSW graph (M=16, efConstruction=200) alongside a from-scratch BM25 inverted index. A Python microservice handles embedding. Queries run through both indexes in parallel — dense HNSW search and sparse BM25 keyword scoring — then Reciprocal Rank Fusion merges the two ranked lists without ever needing to normalize their differently-scaled scores.</p>
+          </div>
+
+          <div class="cs-block">
+            <div class="cs-h">Key Engineering Decisions</div>
+            <table class="cs-table">
+              <tr><th>Component</th><th>What it does</th><th>Why it matters</th></tr>
+              <tr><td>HNSW Index</td><td>Hand-rolled multi-layer graph, greedy descent + beam search</td><td>recall@10 = 0.984 on 1,000 vectors</td></tr>
+              <tr><td>BM25 Index</td><td>Inverted index, k1=1.5, b=0.75</td><td>Catches exact keyword matches dense retrieval misses</td></tr>
+              <tr><td>Reciprocal Rank Fusion</td><td>1/(60+rank_dense) + 1/(60+rank_bm25)</td><td>Combines dense + sparse without score normalization</td></tr>
+              <tr><td>QueryCache</td><td>LRU + ReadWriteLock, 10K entries</td><td>Cache hits return in &lt;1ms</td></tr>
+              <tr><td>HyDE rewriting</td><td>Embeds a hypothetical LLM answer instead of the raw query</td><td>Closes the question-space vs answer-space embedding gap</td></tr>
+              <tr><td>Index persistence</td><td>Atomic write-to-tmp + rename (LevelDB/RocksDB pattern)</td><td>Index loads from disk in &lt;15ms on restart</td></tr>
+            </table>
+          </div>
+
+          <div class="cs-block">
+            <div class="cs-h">Live Dashboard</div>
+            <div class="cs-shots">
+              <div class="cs-shot">
+                <img src="https://github.com/sameer-sde/vektr/raw/main/docs/images/search-results.png" alt="Vektr live semantic search results with RRF scores" loading="lazy">
+                <div class="cs-shot-cap"><strong>Live search</strong> — real query "difference between BERT and GPT" returning ranked results from 4 distinct source documents with RRF scores, 100ms latency</div>
+              </div>
+              <div class="cs-shot">
+                <img src="https://github.com/sameer-sde/vektr/raw/main/docs/images/hnsw-distribution.png" alt="Vektr HNSW layer distribution chart" loading="lazy">
+                <div class="cs-shot-cap"><strong>HNSW graph structure</strong> — real layer distribution from the live index (80 nodes/95% at Layer 0, 4 nodes/5% at Layer 1), matching the paper's expected exponential decay</div>
+              </div>
+              <div class="cs-shot">
+                <img src="https://github.com/sameer-sde/vektr/raw/main/docs/images/dashboard.png" alt="Vektr live search dashboard showing real-time metrics and results" loading="lazy">
+                <div class="cs-shot-cap"><strong>Full dashboard</strong> — search UI, ingest panel, and index metrics from the actual running system</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="cs-block">
+            <div class="cs-h">Results</div>
+            <ul class="cs-list">
+              <li><strong>recall@10 = 0.984</strong> on 1,000 vectors, 50 queries</li>
+              <li><strong>35ms</strong> cold search latency, <strong>&lt;1ms</strong> cached</li>
+              <li><strong>~28ms</strong> warm batch embedding (batch of 3), <strong>~4ms</strong> single warm embed</li>
+              <li>Tested live against 31 Wikipedia articles / 84 vectors — a query like "difference between BERT and GPT" correctly pulls results from 4 distinct source documents via RRF</li>
+            </ul>
+          </div>
+
+          <div class="cs-block">
+            <div class="cs-h">What Makes This Different</div>
+            <p class="cs-p">Most RAG projects wire together existing vector DB SDKs. Vektr instead demonstrates the algorithm underneath them — hybrid retrieval, query rewriting, and durable persistence — built and benchmarked from first principles rather than configured from a managed service.</p>
+          </div>
+
+        </div>
+      </details>
+
       <a href="https://github.com/sameer-sde/vektr" target="_blank" class="proj-link">GitHub ↗</a>
     </div>
 
