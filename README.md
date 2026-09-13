@@ -6,8 +6,6 @@
 [![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com)
 [![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](#-license)
 
-> Personal portfolio website built from scratch — no frameworks, just HTML, CSS & JavaScript.
-
 ### 🌐 [portfolio-chi-two-1deo18r4x1.vercel.app](https://portfolio-chi-two-1deo18r4x1.vercel.app)
 
 ---
