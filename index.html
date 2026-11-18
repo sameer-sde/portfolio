@@ -2026,6 +2026,20 @@ footer{
       <div class="lesson-fix"><strong>Fix:</strong> added BM25 hybrid retrieval with Reciprocal Rank Fusion, combining dense and sparse signals without needing to normalize their differently-scaled scores.</div>
     </div>
 
+    <div class="lesson-card">
+      <div class="lesson-proj">Phantom</div>
+      <div class="lesson-title">A false alarm on correct vLLM was my own bug</div>
+      <div class="lesson-body">Early fuzzing reported a violation on unmodified vLLM. The trace showed vLLM was right: it marks blocks as cached when it schedules a batch, but my model checked each request's context before writing the rest of the batch, so it read slots that were legitimately about to be filled. A tool that cries wolf on correct code is worse than no tool.</div>
+      <div class="lesson-fix"><strong>Fix:</strong> write the whole batch before checking, exactly like real attention. Result: 0 false alarms on unmodified vLLM and LMCache since.</div>
+    </div>
+
+    <div class="lesson-card">
+      <div class="lesson-proj">Phantom</div>
+      <div class="lesson-title">A passing LMCache test that tested nothing</div>
+      <div class="lesson-body">The first LMCache smoke test passed, but the pass came from the wrong place: vLLM's own prefix cache had answered the repeated prompts, so LMCache's load path never ran. A green result only means something if the code under test actually executed.</div>
+      <div class="lesson-fix"><strong>Fix:</strong> turned off vLLM's prefix cache for LMCache runs and made every run report its evidence counters. Result: 11,040 tokens served by LMCache, every one verified.</div>
+    </div>
+
   </div>
 </section>
 
