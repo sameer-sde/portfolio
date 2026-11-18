@@ -1439,7 +1439,7 @@ footer{
       <div class="cmd-section">
         <div class="cmd-section-label">Navigate</div>
         <div class="cmd-item" data-href="#about"><span class="cmd-item-icon">👤</span><div class="cmd-item-text"><div class="cmd-item-name">About</div><div class="cmd-item-desc">Background & story</div></div></div>
-        <div class="cmd-item" data-href="#projects"><span class="cmd-item-icon">⚡</span><div class="cmd-item-text"><div class="cmd-item-name">Projects</div><div class="cmd-item-desc">Sentinel, RaftKV, Vektr</div></div></div>
+        <div class="cmd-item" data-href="#projects"><span class="cmd-item-icon">⚡</span><div class="cmd-item-text"><div class="cmd-item-name">Projects</div><div class="cmd-item-desc">Sentinel, RaftKV, Vektr, Phantom</div></div></div>
         <div class="cmd-item" data-href="#research"><span class="cmd-item-icon">📄</span><div class="cmd-item-text"><div class="cmd-item-name">Research</div><div class="cmd-item-desc">Quantization benchmark, published paper</div></div></div>
         <div class="cmd-item" data-href="#experience"><span class="cmd-item-icon">🔀</span><div class="cmd-item-text"><div class="cmd-item-name">Experience</div><div class="cmd-item-desc">Open source contributions</div></div></div>
         <div class="cmd-item" data-href="#skills"><span class="cmd-item-icon">🛠️</span><div class="cmd-item-text"><div class="cmd-item-name">Skills</div><div class="cmd-item-desc">Go, Java, Python, Redis, AWS...</div></div></div>
@@ -1581,7 +1581,7 @@ footer{
 <div class="sec-divider"></div>
 <section class="sec" id="projects">
   <div class="sec-label reveal">Selected Work</div>
-  <h2 class="sec-title reveal rd1">Projects <em>/03</em></h2>
+  <h2 class="sec-title reveal rd1">Projects <em>/04</em></h2>
     <div class="proj-grid">
 
     <div class="proj-card proj-card-full">
@@ -1826,6 +1826,85 @@ footer{
       </details>
 
       <a href="https://github.com/sameer-sde/vektr" target="_blank" class="proj-link">GitHub ↗</a>
+    </div>
+
+    <div class="proj-card proj-card-full">
+      <div class="proj-badge proj-badge-systems">🔬 LLM Infrastructure · Testing</div>
+      <div class="proj-num">004</div>
+      <div class="proj-name">Phantom — Deterministic Testing for LLM-Serving KV Caches</div>
+      <div class="proj-stack">Python · vLLM · LMCache · GitHub Actions · PyPI</div>
+      <div class="proj-metric-row">
+        <div class="proj-metric-item"><div class="proj-metric-val orange">2</div><div class="proj-metric-lbl">real LMCache bugs</div></div>
+        <div class="proj-metric-item"><div class="proj-metric-val green">0</div><div class="proj-metric-lbl">false alarms</div></div>
+        <div class="proj-metric-item"><div class="proj-metric-val blue">41→7</div><div class="proj-metric-lbl">events, auto-shrunk</div></div>
+        <div class="proj-metric-item"><div class="proj-metric-val purple">199/200</div><div class="proj-metric-lbl">transfer faults caught</div></div>
+        <div class="proj-metric-item"><div class="proj-metric-val orange">0</div><div class="proj-metric-lbl">GPUs needed</div></div>
+      </div>
+      <div class="proj-desc">A weightless model writes a provenance tag (writer, position, prefix hash) into every KV-cache slot instead of K/V vectors, so any slot read by the wrong request is caught exactly. Runs inside real, unmodified vLLM on a laptop CPU with seeded replay and automatic shrinking. Independently found 2 real bugs in LMCache and posted A/B evidence that the upstream fixes work. On PyPI: pip install phantom-kv.</div>
+
+      <details class="case-study">
+        <summary>Read the full case study</summary>
+        <div class="case-study-body">
+
+          <div class="cs-block">
+            <div class="cs-h">The Problem</div>
+            <p class="cs-p">LLM servers get their throughput by sharing GPU memory between users: paged KV blocks, prefix caching, preemption, offloading to CPU or a cache server, and sending KV between machines. When that bookkeeping is wrong, nothing crashes; a request silently reads another user's data, or the cache silently stops working. It is hard to test: a correct cache hit already changes floating-point outputs, the dangerous cases need rare timing, and GPU fuzzing is expensive.</p>
+          </div>
+
+          <div class="cs-block">
+            <div class="cs-h">Approach</div>
+            <p class="cs-p">Replace the model. Phantom has no weights; to the engine it looks like a normal LLM, but in every KV slot it writes a tag whose chain hash identifies the exact prefix, and it checks every slot it reads. Two slots are interchangeable exactly when their chain hashes match, which is the rule prefix caching is allowed to use, so correct sharing never raises an alarm. Borrowing deterministic simulation testing from distributed systems (FoundationDB), one seed fixes the whole run, so failures replay exactly and shrink automatically with delta debugging.</p>
+          </div>
+
+          <div class="cs-block">
+            <div class="cs-h">Key Engineering Decisions</div>
+            <table class="cs-table">
+              <tr><th>Layer</th><th>What it adds</th><th>Win</th></tr>
+              <tr><td>Provenance tags</td><td>(writer, position, BLAKE2b chain hash) in every slot</td><td>Exact oracle, no floating-point noise</td></tr>
+              <tr><td>Output oracle</td><td>Every output checked against the true prompt</td><td>Catches a valid chain for the wrong prompt</td></tr>
+              <tr><td>vLLM plugin</td><td>Out-of-tree model on the CPU backend; vLLM's source untouched</td><td>Real scheduler, real block tables, no GPU</td></tr>
+              <tr><td>In-process stepping</td><td>Drive vLLM one step() at a time</td><td>Aborts land on the exact step; runs replay</td></tr>
+              <tr><td>Shrinker (ddmin)</td><td>Remove events while the failure remains</td><td>41-event seed → 7-event reproduction</td></tr>
+              <tr><td>Evidence counters</td><td>Prefix hits, preemptions, transfers, locks per run</td><td>A clean result proves the path actually ran</td></tr>
+              <tr><td>Trusted Publishing</td><td>GitHub release → PyPI, no stored token</td><td>pip install phantom-kv, signed provenance</td></tr>
+            </table>
+          </div>
+
+          <div class="cs-block">
+            <div class="cs-h">Two Real LMCache Bugs Found Independently</div>
+            <table class="cs-table">
+              <tr><th>Bug</th><th>Root Cause</th><th>Evidence</th></tr>
+              <tr><td>Fast restart never noticed</td><td>vLLM re-registers only after a heartbeat ping fails, and the server answered "fine" even for a worker it had forgotten; a restart shorter than the 10s heartbeat is invisible</td><td>Stores per server lifetime 19, 0, 0, 0 without the fix → 19, 20, 21, 19 with PR #6106</td></tr>
+              <tr><td>Read-lock leak on abort</td><td>A request aborted after its lookup locked cached chunks, but before vLLM scheduled it: the locks are never released and stay for 300s</td><td>Shrunk 41 → 7 events; leaked locks 2 and 3 → 0 with PR #6540</td></tr>
+            </table>
+            <p class="cs-p" style="margin-top:10px;">Both were already reported upstream (issues #4642 and #5656), so instead of filing duplicates I posted the A/B results on the fix PRs.</p>
+          </div>
+
+          <div class="cs-block">
+            <div class="cs-h">Results</div>
+            <ul class="cs-list">
+              <li><strong>0 false alarms</strong> on unmodified vLLM and LMCache, and every seed replays identically</li>
+              <li><strong>Every planted bug class caught:</strong> vLLM's block pool (15–20/20 seeds), KV transfers between two engines (115–199/200), LMCache's own code (10/10)</li>
+              <li><strong>vLLM's CPU offloading:</strong> 21,181 blocks stored and 2,243 loaded back, all verified, no bugs found</li>
+              <li><strong>~300 simulator seeds/s</strong> on one laptop core; failures shrink to 2–13 events</li>
+              <li>Published on <strong>PyPI</strong>, with a technical paper and a blog post; 17 pull requests, all through CI on real vLLM</li>
+            </ul>
+          </div>
+
+          <div class="cs-block">
+            <div class="cs-h">Known Limitations (Documented, Not Oversights)</div>
+            <p class="cs-p">Phantom checks where KV goes, not how it is computed, so it cannot catch a wrong attention kernel. Everything ran on vLLM's CPU backend with a CPU-only LMCache server, so GPU-only paths (CUDA copy streams, NIXL/RDMA transfers) and SGLang are not covered yet.</p>
+          </div>
+
+          <div class="cs-block">
+            <div class="cs-h">What Makes This Different</div>
+            <p class="cs-p">Most testing compares outputs and argues about tolerances. Phantom changes what the model computes so that correctness becomes a hash comparison, then runs it inside the real engine. The lock leak never produced a wrong token; it surfaced only because a replay was not identical, and the shrinker turned it into a 7-event reproduction without guessing.</p>
+          </div>
+
+        </div>
+      </details>
+
+      <a href="https://github.com/sameer-sde/phantom-kv" target="_blank" class="proj-link">View on GitHub ↗</a>
     </div>
 
   </div>

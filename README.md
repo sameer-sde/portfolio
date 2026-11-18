@@ -29,7 +29,7 @@ Third-year Computer Science student at **Osmania University, Hyderabad** — spe
 | 📊 | **Animated Skill Bars** — colorful gradient bars per language |
 | 🎯 | **Section Progress Dots** — right-side navigation dots |
 | 📈 | **Stats Ticker** — scrolling achievement highlights |
-| 📸 | **Live Case Studies** — expandable deep-dives on Sentinel, RaftKV, and Vektr with real, self-captured screenshots |
+| 📸 | **Live Case Studies** — expandable deep-dives on Sentinel, RaftKV, Vektr, and Phantom with real, self-captured screenshots |
 | 🧠 | **Lessons Learned** — real postmortems and bugs found across projects, with the actual fix and measured impact |
 | 🎮 | **Konami Code Easter Egg** — try ↑ ↑ ↓ ↓ ← → ← → B A |
 | 📋 | **Copy Email** — one-click clipboard copy |
@@ -67,6 +67,7 @@ Built with zero frameworks — pure HTML, CSS & JavaScript.
 | [🛡️ Sentinel](https://github.com/sameer-sde/sentinel)                  | Go · Python · XGBoost · ONNX · AWS | **71K RPS** at p95 <6ms             |
 | [🔀 RaftKV](https://github.com/sameer-sde/raftKv)                      | Python                             | From-scratch Raft consensus     |
 | [🔍 Vektr](https://github.com/sameer-sde/vektr)                        | Java · Python · Undertow           | **recall@10 = 0.984**               |
+| [🔬 Phantom](https://github.com/sameer-sde/phantom-kv)                | Python · vLLM · LMCache · PyPI     | **2 real LMCache bugs** found independently |
 | [⏱️ Distributed Rate Limiter](https://github.com/sameer-sde/ratelimit) | Go · Redis · Lua · Docker          | **18,769 req/s** · p95 16ms         |
 
 ### 🤖 AI Applications
